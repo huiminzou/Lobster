@@ -30,8 +30,9 @@ def getstorm(indict):
     abs_v=abs(v)   
     if (indict['crittype']=='speed') or (indict['crittype']=='both'):
         #df=pd.DataFrame({'speed':spd},index=dtimes)
-        df=pd.DataFrame({'speed':abs_v},index=dtimes)
-        storm=df[df['speed']>(indict['stormw'])] #if wind speed is 16 s+, plot
+        df=pd.DataFrame({'speed':v},index=dtimes)
+        storm=df[df['speed']<(-(indict['stormw']))] #if wind speed is 16 s+, plot   negative v
+        #storm=df[df['speed']>(indict['stormw'])] #if wind speed is 16 s+, plot
         stormstart=[]
         stormend=[]
         kk=0 # kk is the index of the storm start
@@ -41,6 +42,9 @@ def getstorm(indict):
                     #meanspeed=mean(df['speed'][kk:k])
                 stormstart.append(storm.index[kk])
                 kk=k
+            elif k==len(storm)-1:# if the difference of the last two time is less than 3 days,set the last on as endtime
+                stormend.append(storm.index[k])
+                stormstart.append(storm.index[kk])
     if (indict['crittype']=='slope') or (indict['crittype']=='both'):
             # get slope and plot
         sqspd=[]
@@ -59,7 +63,10 @@ def getstorm(indict):
                 stormend.append(storm.index[k-1])
                 stormstart.append(storm.index[kk])
                 kk=k
-    return stormstart,stormend
+            elif k==len(storm)-1:
+                stormend.append(storm.index[k])
+                stormstart.append(storm.index[kk])
+    return stormstart,stormend,storm
 
 #function used to get lobster catch value before and after storms 
 #[stormstart,stormend]=getstorm()
@@ -87,11 +94,12 @@ def getcatch(indict):
     for k in range(len(indict['stormstart'])):
         indb=list(np.where((catcht>indict['stormstart'][k]-td(days=indict['time_int'])) & (catcht<indict['stormstart'][k])&(catcht>indict['starttime']))[0])#time focus on summer
         indbef.append(indb)
+        
         inda=list(np.where((catcht>indict['stormend'][k]) & (catcht<indict['stormend'][k]+td(days=indict['time_int']))&(catcht<indict['endtime']))[0])#time focus on early fall season
         indaft.append(inda)
     for i in range(len(indbef)):
         for j in range(len(indbef[i])):
-            bc.append(df2['catch'][indbef[i][j]]/indict['pot'])
+            bc.append(df2['catch'][indbef[i][j]]/indict['pot'])#calculate catch/pot
             bt.append(catcht[indbef[i][j]])       
         before_catch.append(bc)
         before_times.append(bt)
@@ -103,7 +111,7 @@ def getcatch(indict):
         avebc=[]
     for i in range(len(indaft)):
         for j in range(len(indaft[i])):
-            ac.append(df2['catch'][indaft[i][j]]/indict['pot'])
+            ac.append(df2['catch'][indaft[i][j]]/indict['pot'])#calculate catch/pot
             at.append(catcht[indaft[i][j]])
         after_catch.append(ac)
         after_times.append(at)

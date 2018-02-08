@@ -5,6 +5,8 @@ This is a collection of code I found outside normal Python distribution
 that does a variety of things. For example, the "smooth" function below
 does filtering better than I could find in the python moving average functions
 @author: jmanning
+
+huimin added a function to get NCEP wind
 """
 
 import numpy as np
@@ -92,7 +94,7 @@ def get_wind_ncep(starttime,endtime,lat,lon):
         for k in range(len(t)):
             moddate.append(cptimes+td(hours=t[k]-t[0]))
         time_s=(starttime-cptimes).total_seconds()
-        timeindex_s=int(time_s/60/60/6)# index of startime in model, NCEP data'interval is 6 hours
+        timeindex_s=int(time_s/60/60/6)# index of startime in model, NCEP data's time interval is 6 hours
         time_e=(endtime-cptimes).total_seconds()
         timeindex_e=int(time_e/60/60/6)# index of endtime in model
 
@@ -122,7 +124,7 @@ def haversine(lon1, lat1, lon2, lat2):
     d=c * r
     #print type(d)
     return d
-"""
+
 def get_nc_data(url, *args):
     '''
     get specific dataset from url
@@ -191,7 +193,7 @@ def get_wind_fvcom(starttime,endtime,lat,lon):
         for k in range(len(u_wind)):
           dtimes.append(starttime+td(hours=k))
         return dtimes,v_wind,u_wind
-"""
+
 def choose_date_label(start,end):
           
     delta = end - start
