@@ -4,14 +4,14 @@ Created on Tue Jan 10 09:59:33 2012
 Routine to look at plot temperature vs catch
 modeled after emolt.m phase 5
 @author: jmanning 
-huimin modified in Jan 2018 to allow good time lables on zoom in
+Huimin modified in Jan 2018 to allow good time lables on zoom in
+Jim and Xiaoxu noticed in July 2018 that users need the "conversions" and "utilties" modules in the same directory
 """
 from datetime import datetime as dt
 import pylab as plt
 import pandas as pd
 from matplotlib.dates import num2date,DateFormatter
 import sys
-sys.path.append('/net/home3/ocn/jmanning/py/mygit/modules/')
 import conversions 
 import utilities
 import csv
