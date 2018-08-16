@@ -6,6 +6,8 @@ modeled after emolt.m phase 5
 @author: jmanning 
 Huimin modified in Jan 2018 to allow good time lables on zoom in
 Jim and Xiaoxu noticed in July 2018 that users need the "conversions" and "utilties" modules in the same directory
+and you need input file :
+1.'sqldump_2018_01_BN.csv'
 """
 from datetime import datetime as dt
 import pylab as plt
